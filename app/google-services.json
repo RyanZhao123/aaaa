@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "604433898995",
+    "firebase_url": "https://csia-53c8a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "csia-53c8a",
+    "storage_bucket": "csia-53c8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604433898995:android:0a310b64eaf2401715c686",
+        "android_client_info": {
+          "package_name": "com.example.comsci"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604433898995-5rjb5icojq5br9ngkelnpkgbpkq7kkub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyrQdYlKB--4O4G1fEHWEJLrim5aGQBZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604433898995-5rjb5icojq5br9ngkelnpkgbpkq7kkub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
