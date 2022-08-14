@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.comsci">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,17 +18,38 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterActivity2"
+            android:name=".ApiActivity"
             android:exported="false" />
         <activity
+            android:name=".MenuActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_menu2"
+            android:theme="@style/Theme.ComSci.NoActionBar" />
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false"
+            android:label="Camera"
+            android:parentActivityName=".MenuActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:parentActivityName=".MenuActivity" />
+        <activity
+            android:name=".RegisterActivity2"
+            android:exported="false"
+            android:label="Register Account" />
+        <activity
             android:name=".MenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Home" />
         <activity
             android:name=".RegisterAccountActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="IA">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

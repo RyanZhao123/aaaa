@@ -6,4 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="125dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="16dp"
+        android:text="Logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="125dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="16dp"
+        android:text="Camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="125dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="16dp"
+        android:text="Settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

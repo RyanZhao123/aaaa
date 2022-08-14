@@ -25,18 +25,17 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button registerAccount;
-    private ProgressBar progressBarMain;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Login");
         email = findViewById(R.id.editTextEmail);
         password = findViewById(R.id.editTextPassword);
         login = findViewById(R.id.btnLogin);
         registerAccount = findViewById(R.id.btnRegisterAccount);
-        progressBarMain = findViewById(R.id.progressBarMainActivity);
         mAuth = FirebaseAuth.getInstance();
 
         registerAccount.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBarMain.setVisibility(View.VISIBLE);
                 userLogin();
             }
         });
@@ -57,31 +55,48 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
     private void userLogin() {
-        String email2 = email.getText().toString().trim();
-        String password2 = password.getText().toString().trim();
+        String email2 = email.getText().toString();
+        String password2 = password.getText().toString();
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email2).matches()){
             email.setError("Please provide valid email!");
             email.requestFocus();
             return;
-        }
-
-        if(email2.isEmpty()){
+        }else if(email2.isEmpty()){
             email.setError("Please Enter Email");
             email.requestFocus();
-            return;
-        }
-
-
-        if(password2.isEmpty())
+        }else if(password2.isEmpty())
         {
             password.setError("Please Enter Password");
             password.requestFocus();
-            return;
+        }else {
+            mAuth.signInWithEmailAndPassword(email2, password2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if(user.isEmailVerified())
+                        {
+                            Intent i = new Intent(LoginActivity.this, MenuActivity2.class);
+                            i.putExtra("uid", user.getUid());
+                            Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_LONG).show();
+                            startActivity(i);
+                        }
+                        else
+                        {
+                            user.sendEmailVerification();
+                            Toast.makeText(LoginActivity.this, "Please Verify Email", Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Log in Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
 
-        mAuth.signInWithEmailAndPassword(email2, password2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        /*mAuth.signInWithEmailAndPassword(email2, password2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
@@ -105,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                     progressBarMain.setVisibility(View.GONE);
                 }
             }
-        });
+        });*/
     }
 
 }

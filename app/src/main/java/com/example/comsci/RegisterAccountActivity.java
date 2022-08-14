@@ -142,7 +142,7 @@ public class RegisterAccountActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
-                    User user = new User(name2, email2, isMale);
+                    User user = new User(name2, email2);
                     //have to fix random string
                     FirebaseDatabase.getInstance("https://csia-53c8a-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("users").child(FirebaseAuth.getInstance().
                             getCurrentUser().getUid()).setValue("Random String").addOnCompleteListener(new OnCompleteListener<Void>() {

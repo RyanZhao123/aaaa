@@ -1,36 +1,56 @@
 package com.example.comsci;
 
+import java.time.Period;
 import java.util.Date;
+import java.time.LocalDate;
 
 public class User {
     private String name;
-    private String email;
+    private String email; //need to figure out why email isn't accessed
     private boolean isMale;
-    private double weight;
-    private double height;
+    private int weight;
+    private int height;
     private Date dateOfBirth;
+    private int calorieGoal;
 
     public User()
     {
     }
 
-    public User(String name, String email, boolean isMale)
+    public User(String name, String email)
     {
         this.name = name;
         this.email = email;
-        this.isMale = isMale;
         //this.dateOfBirth = dateOfBirth;
     }
 
-   /* public int CalorieCalculator(double weight, double height, int age, boolean isMale)
-    {
-        if(isMale)
-        {
-            int i = 66.5 + (13.75*weight) + (5.003*height);
-        }
+   /*
+
+
+   public int calculateAge(LocalDate birthDate, LocalDate currentDate) {
+       if ((birthDate != null) && (currentDate != null)) {
+           return Period.between(birthDate, currentDate).getYears();
+       } else {
+           return 0;
+       }
+   }
+   */
+
+    public String getEmail() {
+        return email;
     }
 
-    */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getCalorieGoal() {
+        return calorieGoal;
+    }
+
+    public void setCalorieGoal(int calorieGoal) {
+        this.calorieGoal = calorieGoal;
+    }
 
     public String getName() {
         return name;
@@ -48,19 +68,19 @@ public class User {
         isMale = male;
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 

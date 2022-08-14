@@ -8,16 +8,18 @@
 
     <Button
         android:id="@+id/btnCancelUpdated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="97dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
         android:text="Cancel"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="508dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnConfirm" />
 
     <EditText
         android:id="@+id/editTextNameUpdated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="219dp"
+        android:layout_height="54dp"
         android:layout_marginTop="56dp"
         android:ems="10"
         android:hint="Name:"
@@ -28,8 +30,8 @@
 
     <EditText
         android:id="@+id/editTextPasswordUpdated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="224dp"
+        android:layout_height="59dp"
         android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Password:"
@@ -39,21 +41,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailUpdated" />
 
-    <Button
-        android:id="@+id/btnConfirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Create Account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordUpdated" />
-
     <EditText
         android:id="@+id/editTextEmailUpdated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="215dp"
+        android:layout_height="57dp"
         android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="Email:"
@@ -64,8 +55,8 @@
 
     <EditText
         android:id="@+id/editTextConfirmPasswordUpdated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="Confirm Password:"
@@ -76,12 +67,13 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextPasswordUpdated" />
 
     <RadioGroup
+        android:id="@+id/radioGroupGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="632dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="179dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextConfirmPasswordUpdated"
+        tools:ignore="MissingConstraints">
 
         <RadioButton
             android:id="@+id/radioButtonMaleUpdated"
@@ -105,5 +97,16 @@
             tools:layout_editor_absoluteY="430dp" />
 
     </RadioGroup>
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="516dp"
+        android:text="Create Account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
