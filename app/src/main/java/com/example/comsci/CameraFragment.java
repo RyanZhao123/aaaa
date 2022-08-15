@@ -1,11 +1,15 @@
 package com.example.comsci;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
+import android.Manifest.permission;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
@@ -29,6 +34,9 @@ public class CameraFragment extends Fragment {
     private Button btnCapture;
     private Button btnNextStep;
     private Bitmap image;
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
+    private Button btnAlbum;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,10 +51,12 @@ public class CameraFragment extends Fragment {
         imageView = getView().findViewById(R.id.imageViewCamera);
         btnCapture = getView().findViewById(R.id.btnCapturePhoto);
         btnNextStep = getView().findViewById(R.id.btnNextStep);
+        btnAlbum = getView().findViewById(R.id.btnAlbum);
+
         //Request for Camera Permission
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{
-                    Manifest.permission.CAMERA
+                    permission.CAMERA
             }, 100);
         }
         /*btnCapture.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +88,13 @@ public class CameraFragment extends Fragment {
             }
         });
 
-
+        btnAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 3);
+            }
+        });
 
     /*@Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -89,6 +105,8 @@ public class CameraFragment extends Fragment {
     }*/
 
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

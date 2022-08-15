@@ -1,0 +1,123 @@
+<html>
+<head>
+<title>CameraFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CameraFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.comsci</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.Manifest</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.pm.PackageManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Bitmap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.net.Uri</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.annotation.Nullable</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.core.app.ActivityCompat</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.core.content.ContextCompat</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.provider.MediaStore</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.github.dhaval2404.imagepicker.ImagePicker</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">CameraFragment </span><span class="s0">extends </span><span class="s1">Fragment {</span>
+
+    <span class="s0">private </span><span class="s1">ImageView imageView</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button btnCapture</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button btnNextStep</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Bitmap image</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s2">// Inflate the layout for this fragment</span>
+        <span class="s0">return </span><span class="s1">inflater.inflate(R.layout.fragment_camera</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onViewCreated(@NonNull View view</span><span class="s0">, </span><span class="s1">@Nullable Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onViewCreated(view</span><span class="s0">, </span><span class="s1">savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">imageView = getView().findViewById(R.id.imageViewCamera)</span><span class="s0">;</span>
+        <span class="s1">btnCapture = getView().findViewById(R.id.btnCapturePhoto)</span><span class="s0">;</span>
+        <span class="s1">btnNextStep = getView().findViewById(R.id.btnNextStep)</span><span class="s0">;</span>
+        <span class="s2">//Request for Camera Permission</span>
+        <span class="s0">if </span><span class="s1">(ContextCompat.checkSelfPermission(getActivity()</span><span class="s0">, </span><span class="s1">Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {</span>
+            <span class="s1">ActivityCompat.requestPermissions(getActivity()</span><span class="s0">, new </span><span class="s1">String[]{</span>
+                    <span class="s1">Manifest.permission.CAMERA</span>
+            <span class="s1">}</span><span class="s0">, </span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s2">/*btnCapture.setOnClickListener(new View.OnClickListener() { 
+            @Override 
+            public void onClick(View v) { 
+                ImagePicker.with(getActivity()) 
+                        .crop()                 //Crop image(Optional), Check Customization for more option 
+                        .compress(1024)         //Final image size will be less than 1 MB(Optional) 
+                        .maxResultSize(1080, 1080)  //Final image resolution will be less than 1080 x 1080(Optional) 
+                        .start(); 
+            } 
+        });*/</span>
+        <span class="s1">btnCapture.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s2">//Open Camera</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(MediaStore.ACTION_IMAGE_CAPTURE)</span><span class="s0">;</span>
+                <span class="s1">startActivityForResult(intent</span><span class="s0">, </span><span class="s3">100</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">btnNextStep.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(getActivity()</span><span class="s0">, </span><span class="s1">ApiActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">intent.putExtra(</span><span class="s4">&quot;image&quot;</span><span class="s0">, </span><span class="s1">image)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+
+    <span class="s2">/*@Override 
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) { 
+        super.onActivityResult(requestCode, resultCode, data); 
+ 
+        Uri uri = data.getData(); 
+        imageView.setImageURI(uri); 
+    }*/</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onActivityResult(</span><span class="s0">int </span><span class="s1">requestCode</span><span class="s0">, int </span><span class="s1">resultCode</span><span class="s0">, </span><span class="s1">@Nullable Intent data) {</span>
+        <span class="s0">if </span><span class="s1">(requestCode == </span><span class="s3">100</span><span class="s1">){</span>
+            <span class="s2">//Get Capture Image</span>
+            <span class="s1">Bitmap captureImage = (Bitmap) data.getExtras().get(</span><span class="s4">&quot;data&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">image = captureImage</span><span class="s0">;</span>
+            <span class="s2">//Set Capture Image to ImageView</span>
+            <span class="s1">imageView.setImageBitmap(captureImage)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

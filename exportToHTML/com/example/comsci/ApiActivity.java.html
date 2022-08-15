@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>ApiActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ApiActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.comsci</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.RequiresApi</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.annotation.SuppressLint</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.graphics.Bitmap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Build</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.io.File</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.io.FileOutputStream</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.io.IOException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.io.OutputStream</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.nio.file.Files</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">okhttp3.MediaType</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">okhttp3.OkHttpClient</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">okhttp3.Request</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">okhttp3.RequestBody</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">okhttp3.Response</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">ApiActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+
+    <span class="s1">@RequiresApi(api = Build.VERSION_CODES.O)</span>
+    <span class="s1">@SuppressLint(</span><span class="s2">&quot;WrongThread&quot;</span><span class="s1">)</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_api)</span><span class="s0">;</span>
+
+        <span class="s1">Bitmap image = (Bitmap) getIntent().getParcelableExtra(</span><span class="s2">&quot;image&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">File file = </span><span class="s0">new </span><span class="s1">File(getFilesDir() + </span><span class="s2">&quot;/capture&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">OutputStream out = </span><span class="s0">null;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">file.createNewFile()</span><span class="s0">;</span>
+            <span class="s1">out = </span><span class="s0">new </span><span class="s1">FileOutputStream(file)</span><span class="s0">;</span>
+            <span class="s1">image.compress(Bitmap.CompressFormat.JPEG</span><span class="s0">, </span><span class="s3">100</span><span class="s0">, </span><span class="s1">out)</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">finally </span><span class="s1">{</span>
+            <span class="s0">try </span><span class="s1">{</span>
+                <span class="s1">out.close()</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+                <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+        <span class="s1">OkHttpClient client = </span><span class="s0">new </span><span class="s1">OkHttpClient()</span><span class="s0">;</span>
+        <span class="s0">byte</span><span class="s1">[] fileContent = </span><span class="s0">new byte</span><span class="s1">[</span><span class="s3">0</span><span class="s1">]</span><span class="s0">;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">fileContent = Files.readAllBytes(file.toPath())</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">RequestBody requestBody = RequestBody.create(</span>
+                <span class="s1">MediaType.parse(</span><span class="s2">&quot;application/octet-stream&quot;</span><span class="s1">)</span><span class="s0">,</span>
+                <span class="s1">fileContent</span>
+        <span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">Request request = </span><span class="s0">new </span><span class="s1">Request.Builder()</span>
+                <span class="s1">.url(</span><span class="s2">&quot;https://api.logmeal.es/v2/recognition/type&quot;</span><span class="s1">)</span>
+                <span class="s1">.addHeader(</span><span class="s2">&quot;Authorization&quot;</span><span class="s0">, </span><span class="s2">&quot;bcf5ed1019583aadc5e2e3d96343f1a1811e85e6&quot;</span><span class="s1">)</span>
+                <span class="s1">.addHeader(</span><span class="s2">&quot;Content-Type&quot;</span><span class="s0">, </span><span class="s2">&quot;application/octet-stream&quot;</span><span class="s1">)</span>
+                <span class="s1">.post(requestBody)</span>
+                <span class="s1">.build()</span><span class="s0">;</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">Response response = client.newCall(request).execute()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(response)</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(IOException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

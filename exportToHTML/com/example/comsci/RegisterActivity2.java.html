@@ -1,0 +1,219 @@
+<html>
+<head>
+<title>RegisterActivity2.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RegisterActivity2.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.comsci</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.text.TextUtils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Patterns</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RadioButton</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RadioGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.database.FirebaseDatabase</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">RegisterActivity2 </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">EditText name</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText email</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText password</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText confirmPassword</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button createAccount</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button cancel</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">FirebaseAuth mAuth</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">RadioGroup radioGroup</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">RadioButton radioButton</span><span class="s0">;</span>
+    <span class="s0">private boolean </span><span class="s1">isMale</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_register2)</span><span class="s0">;</span>
+
+        <span class="s1">name = findViewById(R.id.editTextNameUpdated)</span><span class="s0">;</span>
+        <span class="s1">email = findViewById(R.id.editTextEmailUpdated)</span><span class="s0">;</span>
+        <span class="s1">password = findViewById(R.id.editTextPasswordUpdated)</span><span class="s0">;</span>
+        <span class="s1">confirmPassword = findViewById(R.id.editTextConfirmPasswordUpdated)</span><span class="s0">;</span>
+        <span class="s1">cancel = findViewById(R.id.btnCancelUpdated)</span><span class="s0">;</span>
+        <span class="s1">createAccount = findViewById(R.id.btnConfirm)</span><span class="s0">;</span>
+        <span class="s1">radioGroup = findViewById(R.id.radioGroupGender)</span><span class="s0">;</span>
+        <span class="s1">mAuth = FirebaseAuth.getInstance()</span><span class="s0">;</span>
+
+        <span class="s1">createAccount.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">createAcc()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">cancel.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">startActivity(</span><span class="s0">new </span><span class="s1">Intent(RegisterActivity2.</span><span class="s0">this, </span><span class="s1">LoginActivity.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">createAcc(){</span>
+        <span class="s1">String nameStr = name.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String emailStr = email.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String passwordStr = password.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String confirmPasswordStr = confirmPassword.getText().toString()</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">radioId = radioGroup.getCheckedRadioButtonId()</span><span class="s0">;</span>
+        <span class="s1">radioButton = findViewById(radioId)</span><span class="s0">;</span>
+
+        <span class="s0">switch</span><span class="s1">(radioButton.getText().toString()){</span>
+            <span class="s0">case </span><span class="s2">&quot;Male&quot;</span><span class="s1">:</span>
+                <span class="s1">isMale = </span><span class="s0">true;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;Female&quot;</span><span class="s1">:</span>
+                <span class="s1">isMale = </span><span class="s0">false;</span>
+                <span class="s0">break;</span>
+            <span class="s0">default</span><span class="s1">:</span>
+                <span class="s0">throw new </span><span class="s1">IllegalStateException(</span><span class="s2">&quot;Unexpected value: &quot; </span><span class="s1">+ radioButton.getText())</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if</span><span class="s1">(TextUtils.isEmpty(nameStr)){</span>
+            <span class="s1">name.setError(</span><span class="s2">&quot;Name cannot be empty&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">name.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">if</span><span class="s1">(TextUtils.isEmpty(emailStr))</span>
+        <span class="s1">{</span>
+            <span class="s1">email.setError(</span><span class="s2">&quot;Email cannot be empty&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">email.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if</span><span class="s1">(!Patterns.EMAIL_ADDRESS.matcher(emailStr).matches()){</span>
+            <span class="s1">email.setError(</span><span class="s2">&quot;Please provide valid email!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">email.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else if </span><span class="s1">(TextUtils.isEmpty(passwordStr))</span>
+        <span class="s1">{</span>
+            <span class="s1">password.setError(</span><span class="s2">&quot;Password cannot be empty&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">password.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else if</span><span class="s1">(TextUtils.isEmpty(confirmPasswordStr)){</span>
+            <span class="s1">confirmPassword.setError(</span><span class="s2">&quot;Please confirm password&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">confirmPassword.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else if</span><span class="s1">(!confirmPasswordStr.equals(passwordStr)){</span>
+            <span class="s1">confirmPassword.setError(</span><span class="s2">&quot;Passwords do not match&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">confirmPassword.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">mAuth.createUserWithEmailAndPassword(emailStr</span><span class="s0">, </span><span class="s1">passwordStr).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;AuthResult&gt;() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+                    <span class="s0">if</span><span class="s1">(task.isSuccessful()) {</span>
+                        <span class="s1">User user = </span><span class="s0">new </span><span class="s1">User(nameStr</span><span class="s0">, </span><span class="s1">emailStr)</span><span class="s0">;</span>
+                        <span class="s1">System.out.println(user)</span><span class="s0">;</span>
+                        <span class="s1">FirebaseDatabase.getInstance(</span><span class="s2">&quot;https://csia-53c8a-default-rtdb.asia-southeast1.firebasedatabase.app&quot;</span><span class="s1">).getReference(</span><span class="s2">&quot;users&quot;</span><span class="s1">).child(FirebaseAuth.getInstance()</span>
+                                <span class="s1">.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;Void&gt;() {</span>
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;Void&gt; task) {</span>
+                                <span class="s1">FirebaseUser currentUser = mAuth.getCurrentUser()</span><span class="s0">;</span>
+                                <span class="s1">currentUser.sendEmailVerification().addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;Void&gt;() {</span>
+                                    <span class="s1">@Override</span>
+                                    <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;Void&gt; task) {</span>
+                                        <span class="s0">if</span><span class="s1">(task.isSuccessful()){</span>
+                                            <span class="s1">Toast.makeText(RegisterActivity2.</span><span class="s0">this, </span><span class="s2">&quot;Verification email sent&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                                            <span class="s1">startActivity(</span><span class="s0">new </span><span class="s1">Intent(RegisterActivity2.</span><span class="s0">this, </span><span class="s1">LoginActivity.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span>
+                                        <span class="s1">}</span>
+                                        <span class="s0">else</span><span class="s1">{</span>
+                                            <span class="s1">Toast.makeText(RegisterActivity2.</span><span class="s0">this, </span><span class="s2">&quot;Verification email failed to send&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                                        <span class="s1">}</span>
+                                    <span class="s1">}</span>
+                                <span class="s1">})</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">})</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else</span><span class="s1">{</span>
+                        <span class="s1">Toast.makeText(RegisterActivity2.</span><span class="s0">this, </span><span class="s2">&quot;Registration Error: &quot; </span><span class="s1">+ task.getException().getMessage()</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+
+
+    <span class="s3">/*private void createAccount() { 
+        String emailStr = email.getText().toString().trim(); 
+        String passwordStr = password.getText().toString(); 
+        String confirmPasswordStr = confirmPassword.getText().toString(); 
+        String nameStr = name.getText().toString(); 
+ 
+        if(nameStr.isEmpty()) 
+        { 
+            name.setError(&quot;Please Enter Name&quot;); 
+            name.requestFocus(); 
+            return; 
+        } 
+ 
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailStr).matches()){ 
+            email.setError(&quot;Please provide valid email!&quot;); 
+            email.requestFocus(); 
+            return; 
+        } 
+ 
+        if(emailStr.isEmpty()){ 
+            email.setError(&quot;Please Enter Email&quot;); 
+            email.requestFocus(); 
+            return; 
+        } 
+ 
+ 
+        if(passwordStr.isEmpty()) 
+        { 
+            password.setError(&quot;Please Enter Password&quot;); 
+            password.requestFocus(); 
+            return; 
+        } 
+ 
+        if(!confirmPasswordStr.equals(passwordStr)) 
+        { 
+            confirmPassword.setError(&quot;Passwords Do Not Match&quot;); 
+            confirmPassword.requestFocus(); 
+            return; 
+        } 
+ 
+        if(confirmPasswordStr.isEmpty()) 
+        { 
+            confirmPassword.setError(&quot;Please Enter Password&quot;); 
+            confirmPassword.requestFocus(); 
+            return; 
+        } 
+ 
+ 
+        mAuth.createUserWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(new OnCompleteListener&lt;AuthResult&gt;() { 
+            @Override 
+            public void onComplete(@NonNull Task&lt;AuthResult&gt; task) { 
+                FirebaseDatabase.getInstance(&quot;https://csia-53c8a-default-rtdb.asia-southeast1.firebasedatabase.app&quot;).getReference(&quot;users&quot;).child(FirebaseAuth.getInstance(). 
+                        getCurrentUser().getUid()).setValue(&quot;Random String&quot;); 
+            } 
+        }); 
+    }*/</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

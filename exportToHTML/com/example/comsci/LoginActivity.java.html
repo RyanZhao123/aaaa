@@ -1,0 +1,145 @@
+<html>
+<head>
+<title>LoginActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+LoginActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.comsci</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Patterns</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.Menu</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ProgressBar</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.AuthResult</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">LoginActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s0">private </span><span class="s1">EditText email</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">EditText password</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button login</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">Button registerAccount</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">FirebaseAuth mAuth</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+        <span class="s1">setTitle(</span><span class="s2">&quot;Login&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">email = findViewById(R.id.editTextEmail)</span><span class="s0">;</span>
+        <span class="s1">password = findViewById(R.id.editTextPassword)</span><span class="s0">;</span>
+        <span class="s1">login = findViewById(R.id.btnLogin)</span><span class="s0">;</span>
+        <span class="s1">registerAccount = findViewById(R.id.btnRegisterAccount)</span><span class="s0">;</span>
+        <span class="s1">mAuth = FirebaseAuth.getInstance()</span><span class="s0">;</span>
+
+        <span class="s1">registerAccount.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">startActivity(</span><span class="s0">new </span><span class="s1">Intent(LoginActivity.</span><span class="s0">this, </span><span class="s1">RegisterActivity2.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">login.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View view) {</span>
+                <span class="s1">userLogin()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+
+    <span class="s1">}</span>
+
+
+    <span class="s0">private void </span><span class="s1">userLogin() {</span>
+        <span class="s1">String email2 = email.getText().toString()</span><span class="s0">;</span>
+        <span class="s1">String password2 = password.getText().toString()</span><span class="s0">;</span>
+
+        <span class="s0">if</span><span class="s1">(!Patterns.EMAIL_ADDRESS.matcher(email2).matches()){</span>
+            <span class="s1">email.setError(</span><span class="s2">&quot;Please provide valid email!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">email.requestFocus()</span><span class="s0">;</span>
+            <span class="s0">return;</span>
+        <span class="s1">}</span><span class="s0">else if</span><span class="s1">(email2.isEmpty()){</span>
+            <span class="s1">email.setError(</span><span class="s2">&quot;Please Enter Email&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">email.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else if</span><span class="s1">(password2.isEmpty())</span>
+        <span class="s1">{</span>
+            <span class="s1">password.setError(</span><span class="s2">&quot;Please Enter Password&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">password.requestFocus()</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">mAuth.signInWithEmailAndPassword(email2</span><span class="s0">, </span><span class="s1">password2).addOnCompleteListener(</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;AuthResult&gt;() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;AuthResult&gt; task) {</span>
+                    <span class="s0">if</span><span class="s1">(task.isSuccessful()){</span>
+                        <span class="s1">FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser()</span><span class="s0">;</span>
+                        <span class="s0">if</span><span class="s1">(user.isEmailVerified())</span>
+                        <span class="s1">{</span>
+                            <span class="s1">Intent i = </span><span class="s0">new </span><span class="s1">Intent(LoginActivity.</span><span class="s0">this, </span><span class="s1">MenuActivity2.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">i.putExtra(</span><span class="s2">&quot;uid&quot;</span><span class="s0">, </span><span class="s1">user.getUid())</span><span class="s0">;</span>
+                            <span class="s1">Toast.makeText(LoginActivity.</span><span class="s0">this, </span><span class="s2">&quot;User logged in successfully&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                            <span class="s1">startActivity(i)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                        <span class="s0">else</span>
+                        <span class="s1">{</span>
+                            <span class="s1">user.sendEmailVerification()</span><span class="s0">;</span>
+                            <span class="s1">Toast.makeText(LoginActivity.</span><span class="s0">this, </span><span class="s2">&quot;Please Verify Email&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                        <span class="s1">Toast.makeText(LoginActivity.</span><span class="s0">this, </span><span class="s2">&quot;Log in Error: &quot; </span><span class="s1">+ task.getException().getMessage()</span><span class="s0">, </span><span class="s1">Toast.LENGTH_LONG).show()</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s3">/*mAuth.signInWithEmailAndPassword(email2, password2).addOnCompleteListener(new OnCompleteListener&lt;AuthResult&gt;() { 
+            @Override 
+            public void onComplete(@NonNull Task&lt;AuthResult&gt; task) { 
+                if(task.isSuccessful()) 
+                { 
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser(); 
+                    if(user.isEmailVerified()) 
+                    { 
+                        Intent i = new Intent(LoginActivity.this, MenuActivity.class); 
+                        i.putExtra(&quot;uid&quot;, user.getUid()); 
+                        startActivity(i); 
+                    } 
+                    else 
+                    { 
+                        user.sendEmailVerification(); 
+                        Toast.makeText(LoginActivity.this, &quot;Please Verify Email&quot;, Toast.LENGTH_LONG).show(); 
+                        progressBarMain.setVisibility(View.GONE); 
+                    } 
+                } 
+                else{ 
+                    Toast.makeText(LoginActivity.this, &quot;Login Failed&quot;, Toast.LENGTH_LONG).show(); 
+                    progressBarMain.setVisibility(View.GONE); 
+                } 
+            } 
+        });*/</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

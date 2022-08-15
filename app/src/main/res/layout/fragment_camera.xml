@@ -29,10 +29,18 @@
                 android:text="Take Photo" />
 
             <Button
+                android:id="@+id/btnAlbum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Photo Album" />
+
+            <Button
                 android:id="@+id/btnNextStep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Next Step" />
+
         </LinearLayout>
 
     </LinearLayout>
