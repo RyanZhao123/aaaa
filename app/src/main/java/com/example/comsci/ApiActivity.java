@@ -1,5 +1,6 @@
 package com.example.comsci;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,9 +65,9 @@ public class ApiActivity extends AppCompatActivity {
                 fileContent
         );
 
-        Request request = new Request.Builder()
+        /*Request request = new Request.Builder()
+                .addHeader("Authorization", "Bearer abd089b422a516f22b34d58facda05f831c7696e")
                 .url("https://api.logmeal.es/v2/recognition/type")
-                .addHeader("Authorization", "bcf5ed1019583aadc5e2e3d96343f1a1811e85e6")
                 .addHeader("Content-Type", "application/octet-stream")
                 .post(requestBody)
                 .build();
@@ -74,6 +77,24 @@ public class ApiActivity extends AppCompatActivity {
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        Request request = new Request.Builder()
+                .url("abd089b422a516f22b34d58facda05f831c7696e")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if(response.isSuccessful()){
+                    //code goes here
+                }
+            }
+        });
     }
 }
